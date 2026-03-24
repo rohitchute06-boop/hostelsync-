@@ -29,45 +29,39 @@
             --table-header: #374151;
         }
 
-        * { box-sizing: border-box; font-family: 'Inter', sans-serif; transition: background 0.2s, color 0.2s; }
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; transition: 0.2s; }
         body { background: var(--bg); margin: 0; display: flex; color: var(--text-main); min-height: 100vh; }
 
-        /* Sidebar */
-        .sidebar { width: 260px; background: var(--sidebar-bg); height: 100vh; border-right: 1px solid var(--border); padding: 24px; position: fixed; display: flex; flex-direction: column; z-index: 100; }
+        .sidebar { width: 260px; background: var(--sidebar-bg); height: 100vh; border-right: 1px solid var(--border); padding: 24px; position: fixed; z-index: 100; }
         .logo-area { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.25rem; color: var(--primary); margin-bottom: 32px; }
         .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; cursor: pointer; color: var(--text-muted); margin-bottom: 4px; }
         .nav-item.active { background: var(--primary); color: white; }
 
-        /* Content Area */
         .content { margin-left: 260px; padding: 40px; width: calc(100% - 260px); }
         header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
 
-        /* Stats */
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 32px; }
-        .stat-card, .card { background: var(--card-bg); padding: 24px; border-radius: 16px; border: 1px solid var(--border); }
+        .stat-card { background: var(--card-bg); padding: 24px; border-radius: 16px; border: 1px solid var(--border); }
         
-        /* Search Bar Styling */
-        .search-container { position: relative; margin-bottom: 20px; width: 100%; max-width: 400px; }
-        .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
-        .search-input { width: 100%; padding: 12px 12px 12px 40px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); color: var(--text-main); font-size: 0.9rem; outline: none; }
-        .search-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
+        /* New Filter Bar */
+        .filter-bar { display: flex; gap: 10px; margin-bottom: 20px; }
+        .filter-btn { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-main); cursor: pointer; font-size: 0.9rem; }
+        .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-        /* Table */
         table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; padding: 16px; background: var(--table-header); color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        th { text-align: left; padding: 16px; background: var(--table-header); color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; }
         td { padding: 16px; border-top: 1px solid var(--border); }
 
-        /* Buttons & Badges */
-        .btn { padding: 8px 14px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+        .btn { padding: 8px 14px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; }
         .btn-approve { background: #ecfdf5; color: var(--success); }
         .btn-reject { background: #fef2f2; color: var(--danger); }
         .btn-primary { background: var(--primary); color: white; }
+
         .badge { padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
         .status-pending { background: #fffbeb; color: #92400e; }
         .status-approved { background: #ecfdf5; color: #065f46; }
         .status-rejected { background: #fef2f2; color: #991b1b; }
 
-        /* Modal */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 1000; }
         .modal { background: var(--card-bg); padding: 32px; border-radius: 16px; width: 450px; }
         .modal input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text-main); }
@@ -79,48 +73,47 @@
         <div class="logo-area"><i data-lucide="shield-check"></i> HostelSync</div>
         <nav style="flex-grow: 1;">
             <div class="nav-item active"><i data-lucide="layout-dashboard"></i> Dashboard</div>
-            <div class="nav-item"><i data-lucide="door-open"></i> Gate Passes</div>
         </nav>
-        <div class="nav-item" onclick="toggleDarkMode()"><i data-lucide="moon" id="theme-icon"></i> Switch Theme</div>
+        <div class="nav-item" onclick="toggleDarkMode()"><i data-lucide="moon"></i> Theme</div>
     </aside>
 
     <main class="content">
         <header>
             <div>
-                <h1>Gate Pass Approvals</h1>
-                <p style="color: var(--text-muted)">Real-time student monitoring system.</p>
+                <h1>Warden Overview</h1>
+                <p style="color: var(--text-muted)">Live Management System</p>
             </div>
             <button class="btn btn-primary" onclick="openModal()"><i data-lucide="plus"></i> New Request</button>
         </header>
 
+        <!-- Visual Analytics -->
         <div class="stats-grid">
-            <div class="stat-card"><h3 id="total-count">0</h3><p>Total Passes</p></div>
-            <div class="stat-card"><h3 id="pending-count">0</h3><p>Pending Requests</p></div>
-            <div class="stat-card"><h3>24</h3><p>Out Today</p></div>
+            <div class="stat-card"><h3 id="stat-total">0</h3><p>Total Submissions</p></div>
+            <div class="stat-card"><h3 id="stat-pending" style="color: var(--warning)">0</h3><p>Pending Requests</p></div>
+            <div class="stat-card"><h3 id="stat-processed" style="color: var(--success)">0</h3><p>Total Processed</p></div>
         </div>
 
-        <div class="card">
-            <div class="search-container">
-                <i data-lucide="search" class="search-icon" size="18"></i>
-                <input type="text" id="searchInput" class="search-input" placeholder="Search by name, room, or reason..." onkeyup="handleSearch()">
-            </div>
-            
+        <div class="filter-bar">
+            <button class="filter-btn active" onclick="setFilter('All', this)">All</button>
+            <button class="filter-btn" onclick="setFilter('Pending', this)">Pending</button>
+            <button class="filter-btn" onclick="setFilter('Processed', this)">Processed</button>
+        </div>
+
+        <div class="stat-card">
             <table>
                 <thead>
                     <tr><th>Student</th><th>Room</th><th>Reason</th><th>Status</th><th>Actions</th></tr>
                 </thead>
                 <tbody id="passTableBody"></tbody>
             </table>
-            <div id="noResults" style="display: none; text-align: center; padding: 20px; color: var(--text-muted);">No students found matching your search.</div>
         </div>
     </main>
 
-    <!-- Modal -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal">
-            <h3>Add Request</h3>
+            <h3>New Gate Pass</h3>
             <input type="text" id="newName" placeholder="Full Name">
-            <input type="text" id="newRoom" placeholder="Room No">
+            <input type="text" id="newRoom" placeholder="Room Number">
             <input type="text" id="newReason" placeholder="Reason">
             <div style="display: flex; gap: 10px; margin-top: 20px;">
                 <button class="btn btn-primary" onclick="addNewPass()" style="flex: 1">Submit</button>
@@ -130,80 +123,83 @@
     </div>
 
     <script>
+        let currentFilter = 'All';
         let passes = [
             { id: 1, name: "Aryan Sharma", room: "B-104", reason: "Home Visit", status: "Pending" },
-            { id: 2, name: "Ishan Verma", room: "A-202", reason: "Local Outing", status: "Pending" },
-            { id: 3, name: "Priya Das", room: "G-101", reason: "Library Visit", status: "Approved" }
+            { id: 2, name: "Ishan Verma", room: "A-202", reason: "Local Outing", status: "Pending" }
         ];
-
-        let filteredData = [...passes]; // Copy of data for searching
 
         function init() {
             lucide.createIcons();
             render();
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            document.body.setAttribute('data-theme', savedTheme);
         }
 
-        function render(data = filteredData) {
+        function render() {
             const table = document.getElementById('passTableBody');
-            const noResults = document.getElementById('noResults');
-
-            if (data.length === 0) {
-                table.innerHTML = "";
-                noResults.style.display = "block";
-            } else {
-                noResults.style.display = "none";
-                table.innerHTML = data.map(p => `
-                    <tr>
-                        <td><strong>${p.name}</strong></td>
-                        <td>${p.room}</td>
-                        <td>${p.reason}</td>
-                        <td><span class="badge status-${p.status.toLowerCase()}">${p.status}</span></td>
-                        <td style="display: flex; gap: 8px;">
-                            ${p.status === 'Pending' ? `
-                                <button class="btn btn-approve" onclick="updateStatus(${p.id}, 'Approved')"><i data-lucide="check" size="14"></i></button>
-                                <button class="btn btn-reject" onclick="updateStatus(${p.id}, 'Rejected')"><i data-lucide="x" size="14"></i></button>
-                            ` : `<span style="color: var(--text-muted); font-size: 0.8rem">Fixed</span>`}
-                        </td>
-                    </tr>
-                `).join('');
-            }
             
-            document.getElementById('pending-count').innerText = passes.filter(p => p.status === 'Pending').length;
-            document.getElementById('total-count').innerText = passes.length;
+            // 1. Data Filtering Logic
+            const displayData = passes.filter(p => {
+                if (currentFilter === 'All') return true;
+                if (currentFilter === 'Pending') return p.status === 'Pending';
+                if (currentFilter === 'Processed') return p.status !== 'Pending';
+                return true;
+            });
+
+            table.innerHTML = displayData.map(p => `
+                <tr>
+                    <td><strong>${p.name}</strong></td>
+                    <td>${p.room}</td>
+                    <td>${p.reason}</td>
+                    <td><span class="badge status-${p.status.toLowerCase()}">${p.status}</span></td>
+                    <td style="display: flex; gap: 8px;">
+                        ${p.status === 'Pending' ? `
+                            <button class="btn btn-approve" onclick="updateStatus(${p.id}, 'Approved')"><i data-lucide="check" size="14"></i></button>
+                            <button class="btn btn-reject" onclick="updateStatus(${p.id}, 'Rejected')"><i data-lucide="x" size="14"></i></button>
+                        ` : `<span style="color: var(--text-muted); font-size: 0.8rem">Finished</span>`}
+                    </td>
+                </tr>
+            `).join('');
+
+            // 2. Real-time Visual Analytics
+            document.getElementById('stat-total').innerText = passes.length;
+            document.getElementById('stat-pending').innerText = passes.filter(p => p.status === 'Pending').length;
+            document.getElementById('stat-processed').innerText = passes.filter(p => p.status !== 'Pending').length;
+            
             lucide.createIcons();
         }
 
-        // New Search Logic
-        function handleSearch() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            filteredData = passes.filter(p => 
-                p.name.toLowerCase().includes(query) || 
-                p.room.toLowerCase().includes(query) ||
-                p.reason.toLowerCase().includes(query)
-            );
-            render(filteredData);
+        function setFilter(filter, btn) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            render();
+        }
+
+        function addNewPass() {
+            const name = document.getElementById('newName').value.trim();
+            const room = document.getElementById('newRoom').value.trim();
+            const reason = document.getElementById('newReason').value.trim();
+
+            // 3. Data Validation
+            if (!name || !room || !reason) {
+                alert("⚠️ Please fill in all fields before submitting!");
+                return;
+            }
+
+            passes.unshift({ id: Date.now(), name, room, reason, status: "Pending" });
+            render();
+            closeModal();
+            // Clear inputs
+            document.getElementById('newName').value = "";
+            document.getElementById('newRoom').value = "";
+            document.getElementById('newReason').value = "";
         }
 
         function updateStatus(id, newStatus) {
             const pass = passes.find(p => p.id === id);
             if(pass) {
                 pass.status = newStatus;
-                handleSearch(); // Refresh filtered view
-            }
-        }
-
-        function addNewPass() {
-            const name = document.getElementById('newName').value;
-            const room = document.getElementById('newRoom').value;
-            const reason = document.getElementById('newReason').value;
-            if(name && room) {
-                passes.unshift({ id: Date.now(), name, room, reason, status: "Pending" });
-                document.getElementById('searchInput').value = ""; // Clear search on new add
-                filteredData = [...passes];
                 render();
-                closeModal();
             }
         }
 
@@ -212,10 +208,7 @@
         
         function toggleDarkMode() {
             const current = document.body.getAttribute('data-theme');
-            const next = current === 'light' ? 'dark' : 'light';
-            document.body.setAttribute('data-theme', next);
-            localStorage.setItem('theme', next);
-            lucide.createIcons();
+            document.body.setAttribute('data-theme', current === 'light' ? 'dark' : 'light');
         }
 
         window.onload = init;
